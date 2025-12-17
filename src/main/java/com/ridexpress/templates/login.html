@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>RideXpress | Login</title>
+    <style>
+        body { font-family: Arial; background: #0e1a25; color: #fff; display: flex; justify-content: center; align-items: center; height: 100vh; }
+        .card { background: #14222f; padding: 30px; border-radius: 10px; width: 350px; text-align: center; }
+        input { width: 100%; padding: 12px; margin-top: 10px; border-radius: 6px; border: none; }
+        button { background: #00e1ff; border: none; padding: 12px; width: 100%; margin-top: 20px; border-radius: 6px; cursor: pointer; }
+        a { color: #00e1ff; text-decoration: none; display: block; margin-top: 15px; }
+        .error { color: #ff5c5c; margin-bottom: 10px; }
+    </style>
+</head>
+<body>
+<div class="card">
+    <h2>Login</h2>
+
+    <p class="error" th:text="${error}"></p>
+
+    <form action="/login" method="post">
+        <input type="email" name="email" placeholder="Enter Email" required>
+        <input type="password" name="password" placeholder="Enter Password" required>
+        <button type="submit">Login</button>
+    </form>
+
+    <a href="/register">Create New Account</a>
+</div>
+</body>
+</html>

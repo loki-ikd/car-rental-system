@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>RideXpress — Car Details</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        body { font-family: "Inter", sans-serif; background: #0b1824; color: #fff; margin: 0; }
+        header {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 18px 60px; background: #06121b;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.4);
+        }
+        nav a { color: #fff; margin-left: 20px; font-weight: 600; text-decoration: none; }
+        nav a:hover { color: #1bd8f1; }
+
+        .details-container {
+            display: flex; gap: 40px; margin: 40px 70px; align-items: flex-start;
+        }
+        img {
+            width: 420px; height: 280px; object-fit: cover;
+            border-radius: 12px; border: 2px solid #1bd8f1;
+        }
+
+        .info-box { max-width: 600px; }
+        h2 { color: #1bd8f1; margin-bottom: 10px; }
+        .price { color: #1bd8f1; font-weight: bold; font-size: 18px; }
+        .available { color: #32e36a; font-weight: bold; }
+        .not-available { color: #ff5555; font-weight: bold; }
+        .rating { color: gold; font-size: 20px; margin: 10px 0; }
+
+        .btn {
+            background: #1bd8f1; color: black; padding: 12px 20px;
+            border-radius: 8px; text-decoration: none;
+            font-weight: bold; display: inline-block; margin-top: 20px;
+        }
+        .btn:hover { background: #11b9d1; }
+
+        footer {
+            background: #06121b;
+            padding: 35px;
+            text-align: center;
+            margin-top: 40px;
+            color: #aaa;
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <h2>🚗 RideXpress</h2>
+    <nav>
+        <a href="/">Home</a>
+        <a href="/cars">Cars</a>
+    </nav>
+</header>
+
+<section class="details-container">
+    <img th:src="@{'/images/cars/' + ${car.image}}" alt="Car Image">
+
+    <div class="info-box">
+        <h2 th:text="${car.brand + ' ' + car.model}"></h2>
+        <p class="price" th:text="'₹' + ${car.rentalPricePerDay} + '/day'"></p>
+        <p th:text="'Type: ' + ${car.type}"></p>
+        <p th:text="'Location: ' + ${car.location.city}"></p>
+        <p class="rating" th:text="'⭐ ' + ${car.rating}"></p>
+
+        <p th:classappend="${car.available} ? 'available' : 'not-available'"
+           th:text="${car.available} ? '✅ Available' : '❌ Booked'"></p>
+
+        <h4>Features:</h4>
+        <ul>
+            <li th:each="feature : ${car.features}" th:text="${feature}"></li>
+        </ul>
+
+        <!--  Book Now always goes to login for now -->
+        <a th:href="@{'/login?carId=' + ${car.carId}}" class="btn">Book Now</a>
+
+    </div>
+</section>
+
+<footer>
+    © 2025 RideXpress — Your Journey, Our Wheels 🌍
+</footer>
+
+
+</html>

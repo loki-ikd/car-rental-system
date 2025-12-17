@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>RideXpress — Cars</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/cars.css}">
+    
+</head>
+<body>
+<header>
+    <h2>🚗 RideXpress</h2>
+    <nav>
+        <a href="/">Home</a>
+        <a href="/cars" style="color:#1bd8f1;">Cars</a>
+    </nav>
+</header>
+
+<form class="filter-box" method="get" action="/cars">
+    <input type="text" name="search" placeholder="Search brand/model" th:value="${search}">
+    <input type="text" name="brand" placeholder="Brand" th:value="${brand}">
+    <input type="number" name="minPrice" placeholder="Min Price" th:value="${minPrice}">
+    <input type="number" name="maxPrice" placeholder="Max Price" th:value="${maxPrice}">
+    <button type="submit" class="btn">Filter</button>
+</form>
+
+<section class="car-container">
+    <a th:each="car : ${cars}" th:href="@{'/cars/details?id=' + ${car.carId}}" style="text-decoration:none; color:inherit;">
+        <div class="car-card">
+            <img th:src="@{'/images/cars/' + ${car.image}}" alt="Car Image">
+            <h3 th:text="${car.brand + ' ' + car.model}"></h3>
+            <p class="price" th:text="'₹' + ${car.rentalPricePerDay} + '/day'"></p>
+            <p th:text="${car.location.city}"></p>
+            <p th:classappend="${car.available} ? 'available' : 'not-available'"
+               th:text="${car.available} ? '✅ Available' : '❌ Booked'"></p>
+            <p class="rating" th:if="${car.rating > 0}" th:text="'⭐ ' + ${car.rating}"></p>
+        </div>
+    </a>
+</section>
+
+<footer>© 2025 RideXpress — Your Journey, Our Wheels 🌍</footer>
+</body>
+</html>

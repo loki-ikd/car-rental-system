@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>RideXpress — Cars</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: "Inter", sans-serif; background: #0c1f2e; color: #fff; margin: 0; }
+        header { display: flex; justify-content: space-between; align-items: center;
+                 padding: 20px 50px; background: #06121b; }
+        nav a { color: #fff; margin-left: 20px; }
+
+        .filter-box {
+            background: #112534;
+            padding: 20px;
+            margin: 20px 70px;
+            border-radius: 10px;
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 10px;
+        }
+
+        input, select {
+            padding: 10px;
+            border-radius: 8px;
+            border: none;
+        }
+
+        .car-container {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+            padding: 20px 70px;
+        }
+
+        .car-card {
+            background: #112534;
+            padding: 12px;
+            border-radius: 12px;
+            transition: .3s;
+        }
+        .car-card:hover { transform: translateY(-6px); }
+
+        .car-card img {
+            width: 100%;
+            height: 160px;
+            object-fit: cover;
+            border-radius: 10px;
+        }
+
+        .price { color: #1bd8f1; font-weight: bold; }
+
+        .btn {
+            background: #1bd8f1;
+            color: black;
+            display: block;
+            text-align: center;
+            margin-top: 10px;
+            padding: 10px;
+            border-radius: 6px;
+            font-weight: bold;
+        }
+
+        .pagination {
+            text-align:center;
+            margin: 30px 0;
+        }
+        .pagination a {
+            padding: 10px 18px;
+            background: #1bd8f1;
+            color: black;
+            border-radius: 6px;
+            margin: 0 6px;
+        }
+
+        footer {
+            background: #06121b;
+            padding: 40px;
+            text-align: center;
+            margin-top: 40px;
+            color: #aaa;
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <h2>🚗 RideXpress</h2>
+    <nav>
+        <a href="/">Home</a>
+        <a href="/cars">Cars</a>
+    </nav>
+</header>
+
+<form class="filter-box" method="get" action="/cars">
+    <input type="text" name="search" placeholder="Search brand/model"
+           th:value="${param.search}">
+    <input type="number" name="minPrice" placeholder="Min Price"
+           th:value="${param.minPrice}">
+    <input type="number" name="maxPrice" placeholder="Max Price"
+           th:value="${param.maxPrice}">
+    <select name="sort">
+        <option value="">Sort By</option>
+        <option value="priceAsc" th:selected="${param.sort == 'priceAsc'}">Price: Low → High</option>
+        <option value="priceDesc" th:selected="${param.sort == 'priceDesc'}">Price: High → Low</option>
+    </select>
+    <button type="submit" class="btn">Filter</button>
+</form>
+
+<section class="car-container">
+    <div th:each="car : ${cars}" class="car-card">
+     <img th:src="@{/images/cars/default.jpg}" alt="Car Image">
+
+
+        <h3 th:text="${car.brand + ' ' + car.model}"></h3>
+        <p class="price" th:text="'₹' + ${car.rentalPricePerDay} + '/day'"></p>
+        <p th:text="${car.type}"></p>
+        <p th:text="${car.available} ? '✅ Available' : '❌ Booked'"></p>
+
+        <a th:href="@{'/car/details/' + ${car.id}}" class="btn">View Details</a>
+    </div>
+</section>
+
+<div class="pagination">
+    <a th:if="${currentPage > 0}"
+       th:href="@{'/cars?page=' + (${currentPage} - 1)}">Prev</a>
+
+    <a th:if="${currentPage < totalPages - 1}"
+       th:href="@{'/cars?page=' + (${currentPage} + 1)}">Next</a>
+</div>
+
+<footer>
+    © 2025 RideXpress — Your Journey, Our Wheels 🌍  
+    Contact | Privacy Policy | Terms
+</footer>
+
+</body>
+</html>
